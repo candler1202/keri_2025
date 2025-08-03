@@ -676,15 +676,12 @@ $(window).on('load', function () {
 });
 
 
-
-
 // 도메인 슬라이더 초기화 (Swiper.js 사용) - 안정화된 버전
 function initDomainSlider() {
   if (!$('.domain').length || typeof Swiper === 'undefined') return;
-  
   // 기존 이벤트 핸들러 제거
-  $('.domain-controls .prev, .domain-controls .next, .domain-controls .pause').off('click');
-  
+  $('.domain-controls .prev, .domain-controls .next, .domain-controls .pause, .domain-nav .nav-item').off('click');
+
   // 기존 슬라이더가 있다면 제거
   if (window.domainSwiper) {
     window.domainSwiper.destroy();
@@ -700,20 +697,15 @@ function initDomainSlider() {
       slidesPerView: 1,
       spaceBetween: 0,
       loop: true,
-      autoplay: false,
-      pagination: {
-        el: '.domain-controls .pagination',
-        type: 'fraction',
-        formatFractionCurrent: function (number) {
-          return number;
-        },
-        formatFractionTotal: function (number) {
-          return '10';
-        }
+      // @@@ 신종미 부장님.
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
       },
       on: {
-        slideChange: function() {
-          $('.domain-controls .pagination .current').text(this.realIndex + 1);
+        slideChange: function(swiper) {
+          $('.domain-controls .pagination .current').text(swiper.realIndex + 1);
         }
       }
     });
@@ -722,11 +714,11 @@ function initDomainSlider() {
     $('.domain-controls .prev').on('click', function() {
       window.domainSwiper.slidePrev();
     });
-    
+
     $('.domain-controls .next').on('click', function() {
       window.domainSwiper.slideNext();
     });
-    
+
     $('.domain-controls .pause').on('click', function() {
       if ($(this).hasClass('play')) {
         window.domainSwiper.autoplay.start();
@@ -736,14 +728,8 @@ function initDomainSlider() {
         $(this).addClass('play');
       }
     });
-    
+
     $('.domain-controls').show();
-    
-    // 네비게이션 아이템 클릭 이벤트 (모바일)
-    $('.domain-nav .nav-item').on('click', function() {
-      var index = $(this).data('index');
-      window.domainSwiper.slideToLoop(index);
-    });
   }
   
   function initDesktopSlider() {
@@ -783,22 +769,20 @@ function initDomainSlider() {
       centeredSlides: true,
       speed: 500,
       allowTouchMove: true,
-      on: {
-        slideChange: function() {
-          // 활성화 되면 높이가 달라져서 높이 조절
-          
-        }
-      }
+      // on: {
+      //   slideChange: function() {
+      //   }
+      // }
     });
     
     // 메인 슬라이더와 네비게이션 슬라이더 연결
-    window.domainSwiper.on('slideChange', function() {
+    window.domainSwiper.on('slideChange', function(swiper) {
       // 페이징 숫자 업데이트
-      $('.domain-controls .pagination .current').text(this.realIndex + 1);
+      $('.domain-controls .pagination .current').text(swiper.realIndex + 1);
       // 네비게이션 슬라이더 이동
-      window.domainNavSwiper.slideToLoop(this.realIndex);
+      window.domainNavSwiper.slideToLoop(swiper.realIndex);
 
-      if (this.realIndex % 2 !== 0) {
+      if (swiper.realIndex % 2 !== 0) {
         $('.domain').addClass('even-slide');
       } else {
         $('.domain').removeClass('even-slide');
@@ -834,19 +818,18 @@ function initDomainSlider() {
     
     $('.domain-controls').show();
     $('.domain').removeClass('even-slide');
-
-    // 로딩 및 셋팅 완료후 보이게 처리
-    $('.domain .container').removeClass('ready');
   }
   
   // 실제 초기화 실행
-  var windowWidth = $(window).width();
-  
+  var windowWidth = $(window).outerWidth();
+
   if (windowWidth <= 1080) {
     initMobileSlider();
   } else {
     initDesktopSlider();
   }
+  // 로딩 및 셋팅 완료후 보이게 처리
+  $('.domain .container').removeClass('ready');
 }
 
 // DOM 로드 완료 후 도메인 슬라이더 초기화 
@@ -1024,18 +1007,18 @@ function initSupportSlider() {
       speed: 600,
       loop: true,
       loopFillGroupWithBlank: true,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false
-      },
+      // autoplay: {
+      //   delay: 3000,
+      //   disableOnInteraction: false,
+      //   pauseOnMouseEnter: false
+      // },
       navigation: {
         nextEl: '.support_banner .support_btn_next',
         prevEl: '.support_banner .support_btn_prev',
       },
       breakpoints: {
-        // 1080 이상 2개씩 보여주기
-        1080: {
+        // 1400 이상 2개씩 보여주기
+        1401: {
           slidesPerView: 2,
         }
       }

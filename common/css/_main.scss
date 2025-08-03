@@ -2825,6 +2825,63 @@ section{
         }
       }
     }
+
+    @media screen and (max-width: 1400px){
+      .container{display: block; width: 100%;}
+      .support {
+        width: 100%;
+        .support_banner{
+          width: 110%;
+          >div{
+            width: calc(100%);
+            justify-content: flex-start;
+          }
+
+          // jjh 수정
+          .support_list {
+            .support_item {
+              flex: 0 0 calc(25%);
+
+              // img {
+              //   width: 100%;
+              //   height: auto;
+              // }
+            }
+          }
+        }
+      }
+      .certifin{
+        width: 100%;
+        .service_cards{
+          height: 100%;}
+      }
+    }
+
+    @media screen and (max-width: 720px){
+      .support {
+        .support_banner{
+
+          // jjh 수정
+          .support_list {
+            .support_item {
+              flex: 0 0 calc(100vw - 10%);
+
+              img {
+                width: 100%;
+                height: auto;
+              }
+            }
+          }
+        }
+      }
+      .certifin{
+        width: 100%;
+        .service_cards{
+          height: 100%;}
+      }
+    }
+
+    /*
     @media screen and (max-width: 1400px){
       .container{
         gap: 20px;
@@ -3137,6 +3194,7 @@ section{
       }
      
     } 
+      */
   }
   // 폰트 물 흐르는 효과 애니메이션 정의
   @keyframes flowingText {
