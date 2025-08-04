@@ -701,7 +701,9 @@ function initDomainSlider() {
   if (window.domainNavSwiper) {
     window.domainNavSwiper.destroy();
   }
-  
+
+  var item_len = 10;
+
   // 함수들을 먼저 정의
   function initMobileSlider() {
     // 모바일 세로 카드 슬라이더
@@ -717,7 +719,7 @@ function initDomainSlider() {
       },
       on: {
         slideChange: function(swiper) {
-          $('.domain-controls .pagination .current').text(swiper.realIndex + 1);
+          $('.domain-controls .pagination .current').text(swiper.realIndex % item_len + 1);
         }
       }
     });
@@ -745,8 +747,6 @@ function initDomainSlider() {
   }
   
   function initDesktopSlider() {
-    var item_len = 10;
-
     // 아이템 복제 nav 쪽 개수가 적어서 스크롤시 비어있는것이 보여서 2배로 셋팅함
     if ($('.domain-nav .nav-item').length === item_len) {
         var navItems = $('.domain-nav .nav-item').clone();
